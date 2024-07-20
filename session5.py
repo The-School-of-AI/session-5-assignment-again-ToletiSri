@@ -1,36 +1,4 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/HfhAxLC5)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=15411907&assignment_repo_type=AssignmentRepo)
-# EPAi v5 -  Session 5 - Functional Parameters
-
-## Session 5 Topics
-
-DocStrings and Annotations \
-Lambda Expressions \
-Lambdas and Sorting \
-Function Introspection \
-Callables \
-Map, Filter and Zip \
-Reducing Functions \
-Partial Functions \ 
-Operator Module \
-
-This assigment consists of the implementation of following fuctions: 
-
-### Time It Function
-This function  gives out the average run time per call, such that its definition is:
-
-def time_it(fn, *args, repetitons= 1, **kwargs): your code comes here.
-
-We should be able to call it like this:
-
-time_it(print, 1, 2, 3, sep='-', end= ' ***\n'. repetitons=5) \
-time_it(squared_power_list, 2, start=0, end=5, repetitons=5) #2 is the number you are calculating power of, [1, 2, 4, 8, 16, 32] \
-time_it(polygon_area, 15, sides = 3, repetitons=10) # 15 is the side length. This polygon supports area calculations of upto a hexagon \
-time_it(temp_converter, 100, temp_given_in = 'f', repetitons=100) # 100 is the base temperature given to be converted \
-time_it(speed_converter, 100, dist='km', time='min', repetitons=200) #dist can be km/m/ft/yrd, time can be ms/s/m/hr/day, speed given by the user is in kmph \
-
-#### Code
-
+"""TSAI - EPAi-V5 Assignment 5 - Functional Parameters"""
 
 import time
 from time import perf_counter
@@ -43,12 +11,15 @@ def time_it(fn, *args, repetitions= 1, **kwargs):
     time_taken_cache = []
     # Repetition should be positive number
     if (not isinstance(repetitions, (int))) or repetitions < 1 :
-        raise(ValueError,"repetitions should be an integer number with value >= 1")     
-    
+        raise(ValueError,"repetitions should be an integer number with value >= 1")
+
     if not isinstance(fn, function):
-        raise(ValueError,"fn should be a functions") 
+        raise(ValueError,"fn should be a functions")
     
-    if fn.__name__ in ('print', 'squared_power_list','polygon_area','temp_converter','speed_converter')
+    if repetitions == 0:
+        return 0
+
+    if fn.__name__ in ('print', 'squared_power_list','polygon_area','temp_converter','speed_converter'):
         raise(ValueError,"time_it can't time " + fn.__name__ + "function")
 
     for i in range [0:repetitions]:
@@ -66,20 +37,20 @@ def squared_power_list(number,*args, start=0, end=5,**kwargs):
 
     from decimal import Decimal
 
-    # Validations "if" block       
+    # Validations "if" block
     if not isinstance(number, (int, float, Decimal)):
         raise(ValueError,"number should be an integer, float or decimal number")
-    
+
     if not isinstance(start, int):
         raise(ValueError,"start should be an integer")
 
     if not isinstance(end, int):
-        raise(ValueError,"end should be an integer")  
-    
-    # Return the list of number to the power of numbers from start to end    
+        raise(ValueError,"end should be an integer")
+
+    # Return the list of number to the power of numbers from start to end
     powered_list = [pow(number,i) for i in range[start:end]]
     return powered_list
- 
+
 
 def polygon_area(length, *args, sides = 3, **kwargs):
     import math
@@ -89,7 +60,7 @@ def polygon_area(length, *args, sides = 3, **kwargs):
     # Validations
     if not sides < 3 or sides > 6:
         raise(ValueError,"3 <= sides <= 6")
-    
+
     # Return area
     area = (length * sides**2) / (4 * math.tan(math.pi / length))
     return area
@@ -100,7 +71,7 @@ def temp_converter(temp, *args, temp_given_in = 'f', **kwargs):
 
     # Validations
     if not temp_given_in in ('f','c'):
-        raise(ValueError,"temp_given_in should be 'f' or 'c'")   
+        raise(ValueError,"temp_given_in should be 'f' or 'c'")
 
     # Return the converted temprature
     if temp_given_in == 'f':
@@ -108,7 +79,7 @@ def temp_converter(temp, *args, temp_given_in = 'f', **kwargs):
         return Celsius_temp
     elif temp_given_in == 'c':
         farenheit_temp = temp_given_in * 9.0 / 5.0 + 32
-        return farenheit_temp    
+        return farenheit_temp
     pass
 
 def speed_converter(speed, *args, dist='km', time='min', **kwargs):
@@ -126,7 +97,7 @@ def speed_converter(speed, *args, dist='km', time='min', **kwargs):
         raise(ValueError,"dist should be 'KM','M','FT','YRD'")
     if not time in ('MIN','MS','S','HR','DAY'):
         raise(ValueError,"time should be 'min','ms','s','hr', or 'day'")
-    
+
     #I copied from chat GPT though :(
     # Conversion factors
     dist_factors = {
@@ -135,7 +106,7 @@ def speed_converter(speed, *args, dist='km', time='min', **kwargs):
         'FT': 3280.84,
         'YRD': 1093.61
     }
-    
+
     time_factors = {
         'MS': 3600000,
         'S': 3600,
@@ -143,15 +114,13 @@ def speed_converter(speed, *args, dist='km', time='min', **kwargs):
         'HR': 1,
         'DAY': 1/24
     }
-    
+
     # Convert speed to km/min
     speed_km_per_min = speed / 60.0
-    
+
     # Convert to desired distance unit
     speed_in_dist = speed_km_per_min * dist_factors[dist]
     # Convert to desired time unit
     converted_speed = speed_in_dist / time_factors[time]
     # Return the converted speed
     return converted_speed
-    
-
