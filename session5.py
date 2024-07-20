@@ -11,12 +11,12 @@ def time_it(fn, *args, repetitions= 1, **kwargs):
     from functools import reduce
     time_taken_cache = []
     # Repetition should be positive number
-    if (not isinstance(repetitions, (int))) or repetitions < 1 :
-        raise ValueError("repetitions should be an integer number with value >= 1")
+    if (not isinstance(repetitions, (int))) or repetitions < 0 :
+        raise ValueError("repetitions should be an integer number with value >= 0")
 
     # if not isinstance(fn, types.FunctionType):
     #     raise ValueError("First argument should be a function")
-    
+
     if repetitions == 0:
         return 0
 
@@ -39,17 +39,32 @@ def squared_power_list(number,*args, start=0, end=5,**kwargs):
     from decimal import Decimal
 
     # Validations "if" block
-    if not isinstance(number, (int, float, Decimal)):
-        raise ValueError("number should be an integer, float or decimal number")
+    if not isinstance(number, int):
+        raise TypeError("Only integer type arguments are allowed")
 
     if not isinstance(start, int):
-        raise ValueError("start should be an integer")
+        raise TypeError("start should be an integer")
 
     if not isinstance(end, int):
-        raise ValueError("end should be an integer")
+        raise TypeError("end should be an integer")
+
+    if (start < 0) or (end < 0) :
+        raise ValueError("Value of start or end can't be negative")
+
+    if start > end:
+        raise ValueError("Value of start should be less than end")
+
+    if number > 10:
+        raise ValueError("Value of number should be less than 10")
+
+    if(len(args) > 0):
+        raise TypeError("Function takes maximum 1 positional arguments")
+
+    if(len(kwargs) > 0):
+        raise TypeError("Function takes maximum 2 keyword/named arguments")
 
     # Return the list of number to the power of numbers from start to end
-    powered_list = [pow(number,i) for i in range[start:end]]
+    powered_list = [pow(number,i) for i in range(start,end)]
     return powered_list
 
 
@@ -59,6 +74,12 @@ def polygon_area(length, *args, sides = 3, **kwargs):
     3 to 6 bith inclusive"""
 
     # Validations
+    if not isinstance(length, int):
+        raise TypeError("length should be an integer")
+
+    if not isinstance(sides, int):
+        raise TypeError("sides should be an integer")
+
     if not sides < 3 or sides > 6:
         raise ValueError("3 <= sides <= 6")
 
@@ -71,8 +92,11 @@ def temp_converter(temp, *args, temp_given_in = 'f', **kwargs):
     fahrenheit to celsius"""
 
     # Validations
+
+    if not isinstance(temp_given_in,str):
+        raise TypeError("Charcater string expected for temp_given_in")
     if not temp_given_in in ('f','c'):
-        raise ValueError("temp_given_in should be 'f' or 'c'")
+        raise ValueError("Only f or c is allowed")
 
     # Return the converted temprature
     if temp_given_in == 'f':

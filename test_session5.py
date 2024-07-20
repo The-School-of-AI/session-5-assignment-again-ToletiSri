@@ -201,23 +201,35 @@ def test_session5_squared_power_list_output():
 ####################### Validations for polygon_area()####################
 def test_session5_polygon_area():
     """Test polygon_area function for no mandatory positional arguments"""
-    assert True == False, "You need to write this test!"
+    with pytest.raises(TypeError, match=r".*missing 1 required positional argument*"):
+        session5.polygon_area()  # Call without any arguments
 
 def test_session5_polygon_area_length():
     """Test polygon_area function for incorrect values for positional argument length (check for string AND imaginary input)"""
-    assert True == False, "You need to write this test!"
+    with pytest.raises(TypeError, match=r".*length should be an integer*"):
+        session5.polygon_area("length")
+    with pytest.raises(TypeError, match=r".*length should be an integer*"):
+        session5.polygon_area("1+2j")
 
 def test_session5_polygon_area_sides():
     """Test polygon_area function for incorrect value to sides keyword argument (string "ten" AND img input)"""
-    assert True == False, "You need to write this test!"
+    with pytest.raises(TypeError, match=r".*sides should be an integer*"):
+        session5.polygon_area(10, sides="ten")
+    with pytest.raises(TypeError, match=r".*sides should be an integer*"):
+        session5.polygon_area(10, sides=1+2j)
+    
 
 def test_session5_polygon_area_sides_values():
-    """Test polygon_area function for permissible values for sides, check for 0, 1, 2, 7"""
-    assert True == False, "You need to write this test!"
-
+    """Test polygon_areaassert True == False, "You need to write this test!"
+        function for permissible values for sides, check for 0, 1, 2, 7"""
+    assert session5.polygon_area(10, sides=0) == [1,1,1,1], "squared_power_list is not working as expected"
+    assert session5.polygon_area(10, sides=1) == [1,1,1,1], "squared_power_list is not working as expected"
+    assert session5.polygon_area(10, sides=2) == [1,1,1,1], "squared_power_list is not working as expected"
+    assert session5.polygon_area(10, sides=7) == [1,1,1,1], "squared_power_list is not working as expected"
+    
 def test_session5_polygon_area_length_values():
     """Test polygon_area function for permissible values for sides (len > 0)"""
-    assert True == False, "You need to write this test!"
+    assert session5.polygon_area(10, sides=0) == [1,1,1,1], "squared_power_list is not working as expected"
 
 def test_session5_polygon_area_unwanted_args():
     """DON'T TOUCH THIS FUNCTION \
@@ -250,11 +262,15 @@ def test_session5_polygon_area_output():
 
 def test_session5_temp_converter():
     """Test temp_converter function for no mandatory positional arguments"""
-    assert True == False, "You need to write this test!"
+    with pytest.raises(TypeError, match=r".*missing 1 required positional argument*"):
+        temp_converter()  # Call without any arguments
 
 def test_session5_temp_converter_temp():
     """Test temp_converter function for incorrect values for positional argument temp (check for string AND imaginary input) """
-    assert True == False, "You need to write this test!"
+    with pytest.raises(TypeError, match=r".*Only integer type arguments are allowed*"):
+        session5.temp_converter('sac')
+    with pytest.raises(TypeError, match=r".*Only integer type arguments are allowed*"):
+        session5.temp_converter(1+2j)
 
 
 def test_session5_temp_converter_temp_given_in():
