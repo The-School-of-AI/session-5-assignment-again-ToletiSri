@@ -2,6 +2,7 @@
 
 import time
 from time import perf_counter
+import types
 
 def time_it(fn, *args, repetitions= 1, **kwargs):
     """This is a genralized function to call any function
@@ -11,16 +12,16 @@ def time_it(fn, *args, repetitions= 1, **kwargs):
     time_taken_cache = []
     # Repetition should be positive number
     if (not isinstance(repetitions, (int))) or repetitions < 1 :
-        raise(ValueError,"repetitions should be an integer number with value >= 1")
+        raise ValueError("repetitions should be an integer number with value >= 1")
 
-    if not isinstance(fn, function):
-        raise(ValueError,"fn should be a functions")
+    # if not isinstance(fn, types.FunctionType):
+    #     raise ValueError("First argument should be a function")
     
     if repetitions == 0:
         return 0
 
     if fn.__name__ in ('print', 'squared_power_list','polygon_area','temp_converter','speed_converter'):
-        raise(ValueError,"time_it can't time " + fn.__name__ + "function")
+        raise ValueError("time_it can't time " + fn.__name__ + " function")
 
     for i in range [0:repetitions]:
         start_time = perf_counter()
@@ -39,13 +40,13 @@ def squared_power_list(number,*args, start=0, end=5,**kwargs):
 
     # Validations "if" block
     if not isinstance(number, (int, float, Decimal)):
-        raise(ValueError,"number should be an integer, float or decimal number")
+        raise ValueError("number should be an integer, float or decimal number")
 
     if not isinstance(start, int):
-        raise(ValueError,"start should be an integer")
+        raise ValueError("start should be an integer")
 
     if not isinstance(end, int):
-        raise(ValueError,"end should be an integer")
+        raise ValueError("end should be an integer")
 
     # Return the list of number to the power of numbers from start to end
     powered_list = [pow(number,i) for i in range[start:end]]
@@ -59,7 +60,7 @@ def polygon_area(length, *args, sides = 3, **kwargs):
 
     # Validations
     if not sides < 3 or sides > 6:
-        raise(ValueError,"3 <= sides <= 6")
+        raise ValueError("3 <= sides <= 6")
 
     # Return area
     area = (length * sides**2) / (4 * math.tan(math.pi / length))
@@ -71,7 +72,7 @@ def temp_converter(temp, *args, temp_given_in = 'f', **kwargs):
 
     # Validations
     if not temp_given_in in ('f','c'):
-        raise(ValueError,"temp_given_in should be 'f' or 'c'")
+        raise ValueError("temp_given_in should be 'f' or 'c'")
 
     # Return the converted temprature
     if temp_given_in == 'f':
@@ -88,15 +89,15 @@ def speed_converter(speed, *args, dist='km', time='min', **kwargs):
 
     # Validations
     if not isinstance(speed, (int, float)):
-        raise(TypeError, "int/float string expected for speed")
+        raise TypeError("int/float string expected for speed")
     if not isinstance(dist, str):
-        raise(TypeError, "Charcater string expected for dist")
+        raise TypeError("Charcater string expected for dist")
     if not isinstance(time, str):
-        raise(TypeError, "Charcater string expected for time")
+        raise TypeError("Charcater string expected for time")
     if not dist in ('km','m','ft','yrd'):
-        raise(ValueError,"dist should be 'KM','M','FT','YRD'")
+        raise (ValueError,"dist should be 'KM','M','FT','YRD'")
     if not time in ('MIN','MS','S','HR','DAY'):
-        raise(ValueError,"time should be 'min','ms','s','hr', or 'day'")
+        raise ValueError("time should be 'min','ms','s','hr', or 'day'")
 
     #I copied from chat GPT though :(
     # Conversion factors
