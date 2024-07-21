@@ -220,16 +220,20 @@ def test_session5_polygon_area_sides():
     
 
 def test_session5_polygon_area_sides_values():
-    """Test polygon_areaassert True == False, "You need to write this test!"
-        function for permissible values for sides, check for 0, 1, 2, 7"""
-    assert session5.polygon_area(10, sides=0) == [1,1,1,1], "squared_power_list is not working as expected"
-    assert session5.polygon_area(10, sides=1) == [1,1,1,1], "squared_power_list is not working as expected"
-    assert session5.polygon_area(10, sides=2) == [1,1,1,1], "squared_power_list is not working as expected"
-    assert session5.polygon_area(10, sides=7) == [1,1,1,1], "squared_power_list is not working as expected"
-    
+    """Test polygon_area   function for permissible values for sides, check for 0, 1, 2, 7"""
+    with pytest.raises(ValueError, match=r".*3 <= sides <= 6*"):
+        polygon_area(10, sides=0)
+    with pytest.raises(ValueError, match=r".*3 <= sides <= 6*"):
+        polygon_area(10, sides=1)
+    with pytest.raises(ValueError, match=r".*3 <= sides <= 6*"):
+        polygon_area(10, sides=2)
+    with pytest.raises(ValueError, match=r".*3 <= sides <= 6*"):
+        polygon_area(10, sides=7)
+
+
 def test_session5_polygon_area_length_values():
     """Test polygon_area function for permissible values for sides (len > 0)"""
-    assert session5.polygon_area(10, sides=0) == [1,1,1,1], "squared_power_list is not working as expected"
+    assert math.isclose(session5.polygon_area(10, sides=3), 43.30127, rel_tol=1e-3), "polygon_area function is not working as expected"
 
 def test_session5_polygon_area_unwanted_args():
     """DON'T TOUCH THIS FUNCTION \

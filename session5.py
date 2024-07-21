@@ -74,17 +74,38 @@ def polygon_area(length, *args, sides = 3, **kwargs):
     3 to 6 bith inclusive"""
 
     # Validations
+
+    if len(args) > 0:
+        raise TypeError("polygon_area function takes maximum 1 positional arguments, more provided")
+
+    if len(kwargs) > 0:
+        raise TypeError("polygon_area function take maximum 1 keyword/named arguments, more provided")
+
     if not isinstance(length, int):
         raise TypeError("length should be an integer")
 
     if not isinstance(sides, int):
         raise TypeError("sides should be an integer")
 
-    if not sides < 3 or sides > 6:
+    if ((sides < 3) or (sides > 6)):
         raise ValueError("3 <= sides <= 6")
 
+    area = 0
+
+    match sides:
+        case 3:
+            area = ((length ** 2) * math.sqrt(3)) / 4
+
+        case 4:
+            area = length ** 2
+
+        case 5:
+            area = ((1/4) * math.sqrt((5*(5+(2*math.sqrt(5))))) * (length ** 2))
+
+        case 6:
+            area = (((3 * math.sqrt(3)) / 2) * (length ** 2))
+
     # Return area
-    area = (length * sides**2) / (4 * math.tan(math.pi / length))
     return area
 
 def temp_converter(temp, *args, temp_given_in = 'f', **kwargs):
@@ -95,33 +116,51 @@ def temp_converter(temp, *args, temp_given_in = 'f', **kwargs):
 
     if not isinstance(temp_given_in,str):
         raise TypeError("Charcater string expected for temp_given_in")
-    if not temp_given_in in ('f','c'):
+    if not temp_given_in in ('f','c','F','C'):
         raise ValueError("Only f or c is allowed")
+    if not isinstance(temp,int):
+        raise TypeError("Only integer type arguments are allowed for temp")
+    if len(args) > 0:
+        raise TypeError("temp_converter function takes maximum 1 positional arguments, more provided")
+    if len(kwargs) > 0:
+        raise TypeError("temp_converter function take maximum 1 keyword/named arguments, more provided")
 
     # Return the converted temprature
-    if temp_given_in == 'f':
-        Celsius_temp = (temp_given_in - 32) * 5.0 / 9.0
+    if temp_given_in in ('f','F'):
+        if (temp < -459.67):
+            raise ValueError("Temprature can't go below -459.67 fahrenheit = 0 Kelvin")
+        Celsius_temp = (temp - 32) * 5.0 / 9.0
         return Celsius_temp
-    elif temp_given_in == 'c':
-        farenheit_temp = temp_given_in * 9.0 / 5.0 + 32
+    elif temp_given_in in ('c','C'):
+        if (temp < -273.15):
+            raise ValueError("Temprature can't go below -273.15 celsius = 0 Kelvin")
+        farenheit_temp = ((temp * 9.0) / 5.0) + 32
         return farenheit_temp
     pass
 
-def speed_converter(speed, *args, dist='km', time='min', **kwargs):
+def speed_converter(speed, *args, dist='KM', time='MIN', **kwargs):
     """Converts speed from kmph (provided by user as input) to different units
     dist can be km/m/ft/yrd time can be ms/s/min/hr/day """
 
     # Validations
     if not isinstance(speed, (int, float)):
-        raise TypeError("int/float string expected for speed")
+        raise TypeError("Speed can be int or float type only")
     if not isinstance(dist, str):
-        raise TypeError("Charcater string expected for dist")
+        raise TypeError("Charcater string expected for distance unit")
     if not isinstance(time, str):
         raise TypeError("Charcater string expected for time")
-    if not dist in ('km','m','ft','yrd'):
-        raise (ValueError,"dist should be 'KM','M','FT','YRD'")
+    if not dist in ('KM','M','FT','YRD'):
+        raise ValueError("Incorrect unit of distance. Only km/m/ft/yrd allowed")
     if not time in ('MIN','MS','S','HR','DAY'):
-        raise ValueError("time should be 'min','ms','s','hr', or 'day'")
+        raise ValueError("Incorrect unit of Time. Only ms/s/min/hr/day allowed'")
+    if speed < 0:
+        raise ValueError("Speed can't be negative")
+    if speed > 300000:
+        raise ValueError("Speed can't be greater than speed of light")
+    if len(args) > 0:
+        raise TypeError("speed_converter function takes maximum 1 positional arguments, more provided")
+    if len(kwargs) > 0:
+        raise TypeError("speed_converter function take maximum 2 keyword/named arguments, more provided")
 
     #I copied from chat GPT though :(
     # Conversion factors
@@ -140,12 +179,9 @@ def speed_converter(speed, *args, dist='km', time='min', **kwargs):
         'DAY': 1/24
     }
 
-    # Convert speed to km/min
-    speed_km_per_min = speed / 60.0
-
     # Convert to desired distance unit
-    speed_in_dist = speed_km_per_min * dist_factors[dist]
+    speed_in_dist = speed * dist_factors[dist]
     # Convert to desired time unit
     converted_speed = speed_in_dist / time_factors[time]
     # Return the converted speed
-    return converted_speed
+    return round(converted_speed)
